@@ -24,7 +24,10 @@ println(" - clone Julia to ", @__DIR__, "\\julia")
 println(" - create a proxy make script ", @__DIR__, "\\make-julia.bat")
 println("")
 
-ask_yn("Do you want to continue [y/n]? ")
+if ask_yn("Do you want to continue [y/n]? ") == "n" exit() end
+
+mkpath(joinpath(@__DIR__, "temp"))
+
 julia_repo = input("Please type in the link to the julia git repo to clone...\n"*
                    "Leave empty for https://github.com/JuliaLang/julia.git, or [n] for skipping this step: ")
 
@@ -45,9 +48,6 @@ make_txt = raw"""
 open(joinpath(@__DIR__, "make-julia.cmd"), "w") do f
     write(f, make_txt)
 end
-
-
-mkpath(joinpath(@__DIR__, "temp"))
 
 download("https://raw.githubusercontent.com/vegardit/cygwin-portable-installer/master/cygwin-portable-installer.cmd",
         joinpath(@__DIR__, "temp", "cygwin-portable-installer.cmd"))
